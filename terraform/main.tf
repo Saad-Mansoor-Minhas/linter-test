@@ -20,7 +20,8 @@ resource "aws_s3_bucket" "test" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm = "aws:kms"
+        sse_algorithm     = "aws:kms"
+        kms_master_key_id = aws_kms_key.mykey.arn
       }
     }
   }
@@ -29,7 +30,7 @@ resource "aws_s3_bucket" "test" {
   notification {
     # Example: Add a notification for S3 event types
     topic {
-      events = ["s3:ObjectCreated:*"]
+      events    = ["s3:ObjectCreated:*"]
       topic_arn = aws_sns_topic.example.arn
     }
   }
@@ -46,10 +47,10 @@ resource "aws_s3_bucket" "test" {
 
   # Adding public access block configuration
   block_public_access {
-    block_public_acls          = true
-    ignore_public_acls         = true
-    restrict_public_buckets    = true
-    block_public_policy        = true
+    block_public_acls       = true
+    ignore_public_acls      = true
+    restrict_public_buckets = true
+    block_public_policy     = true
   }
 
   # Add access logging (if required, make sure to define the target bucket for logging)
@@ -67,6 +68,20 @@ resource "aws_s3_bucket" "logging_bucket" {
   versioning {
     enabled = true
   }
+
+  # Adding encryption configuration to use KMS
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm     = "aws:kms"
+        kms_master_key_id = aws_kms_key.mykey.arn
+      }
+    }
+  }
+}
+
+resource "aws_kms_key" "mykey" {
+  description = "KMS key for S3 bucket encryption"
 }
 
 output "bucket_name" {
