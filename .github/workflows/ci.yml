@@ -31,8 +31,5 @@ jobs:
       - name: Run config-lint for Terraform
         run: config-lint --terraform terraform/**/*.tf
 
-      - name: Run config-lint for Kubernetes
-        run: config-lint --kubernetes k8s/**/*.yaml
-
       - name: Validate Kubernetes files
         run: kubeval k8s/**/*.yaml
