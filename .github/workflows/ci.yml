@@ -22,7 +22,7 @@ jobs:
       - name: Install kubeval
         run: |
           KUBEVAL_LATEST=$(curl -s https://api.github.com/repos/instrumenta/kubeval/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4)
-          curl -L -o kubeval.tar.gz $KUBEVAL_LATEST
+          curl -L -o kubeval.tar.gz "$KUBEVAL_LATEST"
           tar xzf kubeval.tar.gz
           sudo mv kubeval /usr/local/bin/
           rm kubeval.tar.gz
@@ -39,8 +39,9 @@ jobs:
 
       - name: Run kube-linter
         run: kube-linter lint .
-  
+
      
+
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform 'terraform/**/*.tf'
 
