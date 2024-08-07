@@ -33,6 +33,6 @@ jobs:
     
 
       - name: Validate Kubernetes files
-        run: kubeval /k8s/*.yaml
+        run: kubeval k8s/*.yaml
 
     
