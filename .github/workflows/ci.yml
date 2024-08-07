@@ -15,24 +15,22 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-
-   
-
-
+      
       - name: Install kubeval
         run: |
-          curl -s https://api.github.com/repos/instrumenta/kubeval/releases/latest \
-          | grep browser_download_url \
-          | grep linux-amd64 \
-          | cut -d '"' -f 4 \
-          | xargs -I {} curl -L -o kubeval.tar.gz {}
-
+          KUBEVAL_LATEST=$(curl -s https://api.github.com/repos/instrumenta/kubeval/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4)
+          curl -L -o kubeval.tar.gz $KUBEVAL_LATEST
           tar xzf kubeval.tar.gz
           sudo mv kubeval /usr/local/bin/
+          rm kubeval.tar.gz
+      
+      - name: Run config-lint for Terraform
+        run: config-lint --terraform
 
-    
+      - name: Run config-lint for Kubernetes
+        run: config-lint --kubernetes
 
       - name: Validate Kubernetes files
-        run: kubeval k8s/*.yaml
+        run: kubeval **/*.yaml
 
-    
+      
