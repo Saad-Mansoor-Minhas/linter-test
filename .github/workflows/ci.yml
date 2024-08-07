@@ -37,4 +37,4 @@ jobs:
         run: kubeval **/*.yaml
  
       - name: Run Config-Lint for Terraform
-        run: config-lint --terraform
+        run: config-lint --terraform terraform/**.tf
