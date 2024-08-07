@@ -5,9 +5,9 @@ kind: Deployment
 metadata:
 name: nginx-deployment
 labels:
-    app: apache
+app: apache
 spec:
-  replicas: 2
+replicas: 2
   selector:
     matchLabels:
       app: nginx
