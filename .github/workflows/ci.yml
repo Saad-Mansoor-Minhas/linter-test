@@ -33,10 +33,9 @@ jobs:
           chmod +rx /usr/local/bin/config-lint
 
       - name: Install actionlint
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-release.sh | sh
-          sudo mv ./bin/actionlint /usr/local/bin/
-          rm -rf ./bin
+        id: get_actionlint
+        run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+        shell: bash
 
       - name: Run kube-linter
         run: kube-linter lint .
@@ -48,4 +47,5 @@ jobs:
         run: config-lint --terraform terraform/**.tf
 
       - name: Run actionlint
-        run: actionlint
+        run: ${{ steps.get_actionlint.outputs.executable }} -color
+        shell: bash
