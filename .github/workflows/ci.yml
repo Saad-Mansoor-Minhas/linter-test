@@ -29,10 +29,10 @@ jobs:
           config-lint --version # Verify installation
 
       - name: Run config-lint for Terraform
-        run: config-lint --terraform
+        run: config-lint --terraform terraform/**/*.tf
 
       - name: Run config-lint for Kubernetes
-        run: config-lint --kubernetes
+        run: config-lint --kubernetes k8s/**/*.yaml
 
       - name: Validate Kubernetes files
-        run: kubeval **/*.yaml
+        run: kubeval k8s/**/*.yaml
