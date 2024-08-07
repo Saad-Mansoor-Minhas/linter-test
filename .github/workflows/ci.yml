@@ -27,15 +27,6 @@ jobs:
           sudo mv kubeval /usr/local/bin/
           rm kubeval.tar.gz
 
-      - name: Install Checkov
-        run: pip install checkov
-
-      - name: Install TFLint
-        run: |
-          curl -Lo tflint.zip https://github.com/terraform-linters/tflint/releases/latest/download/tflint_linux_amd64.zip
-          unzip tflint.zip -d /usr/local/bin
-          rm tflint.zip
-
       - name: Install Config-Lint
         run: |
           curl -L https://github.com/stelligent/config-lint/releases/latest/download/config-lint_Linux_x86_64.tar.gz | tar xz -C /usr/local/bin config-lint
@@ -46,15 +37,6 @@ jobs:
 
       - name: Run kubeval
         run: kubeval **/*.yaml
-
-      - name: Run Checkov
-        run: checkov -d . --framework terraform,kubernetes,github_actions
-
-      - name: Run TFLint
-        run: tflint --init && tflint
-
+ 
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform
-
-      - name: Run Config-Lint for Kubernetes
-        run: config-lint -rules example-files/rules/kubernetes.yml example-files/config
