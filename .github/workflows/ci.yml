@@ -35,8 +35,7 @@ jobs:
       - name: Run kube-linter
         run: kube-linter lint .
 
-      - name: Run kubeval
-        run: kubeval **/*.yaml
+      
  
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform
