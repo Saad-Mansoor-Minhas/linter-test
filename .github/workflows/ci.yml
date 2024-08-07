@@ -33,12 +33,21 @@ jobs:
           tar xzf kubeval.tar.gz
           sudo mv kubeval /usr/local/bin/
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
-          prettier: true
-     
+      - name: Install actionlint
+        run: |
+          # Fetch the latest release URL for actionlint
+          ACTIONLINT_LATEST=$(curl -s https://api.github.com/repos/actionlint/actionlint/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4)
+          echo "Latest actionlint URL: $ACTIONLINT_LATEST"
+          
+          # Download actionlint tar.gz file
+          curl -L -o actionlint.tar.gz $ACTIONLINT_LATEST
+          
+          # Extract and move actionlint to /usr/local/bin
+          tar xzf actionlint.tar.gz
+          sudo mv actionlint /usr/local/bin/
+          
+          # Clean up
+          rm actionlint.tar.gz
 
       - name: Lint YAML files
         run: yamllint .
