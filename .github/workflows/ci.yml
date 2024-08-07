@@ -19,5 +19,28 @@ jobs:
       - name: Install Checkov
         run: pip install checkov
 
-      - name: Run Checkov
-        run: checkov -d . --framework terraform,kubernetes,github_actions
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Install kubeval
+        run: |
+          curl -s https://api.github.com/repos/instrumenta/kubeval/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4 | xargs curl -L -o kubeval.tar.gz
+          tar xzf kubeval.tar.gz
+          sudo mv kubeval /usr/local/bin/
+
+      - name: Install actionlint
+        run: |
+          curl -s https://api.github.com/repos/actionlint/actionlint/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4 | xargs curl -L -o actionlint.tar.gz
+          tar xzf actionlint.tar.gz
+          sudo mv actionlint /usr/local/bin/
+
+      - name: Lint YAML files
+        run: yamllint .
+
+      - name: Validate Kubernetes files
+        run: kubeval .
+
+      - name: Lint GitHub Actions files
+        run: actionlint .
+
+        
