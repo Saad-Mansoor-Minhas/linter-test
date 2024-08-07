@@ -41,7 +41,7 @@ jobs:
         run: kube-linter lint .
   
       - name: Run kubeval
-        run: kubeval 'k8s/*.yaml'
+        run: kubeval 'k8s/**.yaml'
 
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform 'terraform/**/*.tf'
