@@ -14,5 +14,9 @@ jobs:
     - name: Install tflint
       uses: terraform-linters/setup-tflint@v1
 
+    - name: Initialize TFLint
+      run: tflint --init
+      working-directory: terraform
+
     - name: Run tflint
-      run: tflint --init && tflint --chdir terraform/
+      run:  tflint --chdir terraform/
