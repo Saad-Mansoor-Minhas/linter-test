@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -42,14 +43,27 @@ jobs:
       - name: Install Checkov
         run: pip install checkov
 
+      - name: Install tflint
+        run: |
+          curl -L https://github.com/terraform-linters/tflint/releases/latest/download/tflint_linux_amd64.zip -o tflint.zip
+          unzip tflint.zip
+          sudo mv tflint /usr/local/bin/
+          rm tflint.zip
+
       - name: Run kube-linter
         run: kube-linter lint k8s/.
+
+      - name: Run kubeval
+        run: kubeval k8s/
 
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform 'terraform/**/*.tf'
 
-      #- name: Run Checkov for Terraform, Kubernetes, and GitHub Actions
-        #run: checkov -d terraform/ -d . -d .github/workflows/
+      - name: Run tflint for Terraform
+        run: tflint --recursive terraform/
+
+      - name: Run Checkov for Terraform, Kubernetes, and GitHub Actions
+        run: checkov -d terraform/ -d k8s/ -d .github/workflows/
 
       - name: Run actionlint
         run: ${{ steps.get_actionlint.outputs.executable }} -color
