@@ -12,30 +12,32 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install tflint
-      uses: terraform-linters/setup-tflint@v4
+      uses: terraform-linters/setup-tflint@v1
 
     - name: Initialize TFLint
       run: tflint --init
       working-directory: terraform
 
     - name: Run tflint
-      run:  tflint --chdir terraform/
+      run: tflint --chdir terraform/
 
-    - name: Create ../results directory for SARIF report files
-      run: mkdir -p ../results
+    - name: Create results directory for SARIF report files
+      run: mkdir -p results
 
-    - name: Scan yaml files with kube-linter
+    - name: Scan YAML files with kube-linter
       uses: stackrox/kube-linter-action@v1.0.5
       id: kube-linter-action-scan
       with:
-        directory: k8s/**.yaml
-        #config: k8s/.kube-linter-config.yaml
+        directory: k8s
+        # config: k8s/.kube-linter-config.yaml  # Uncomment if you have a config file
         format: sarif
-        output-file: ../results/kube-linter.sarif
+        output-file: results/kube-linter.sarif
       continue-on-error: true
 
     - name: Upload SARIF report files to GitHub
       uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: results/kube-linter.sarif
 
     - name: Verify kube-linter-action succeeded
       run: |
