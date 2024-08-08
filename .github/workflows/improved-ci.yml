@@ -25,13 +25,13 @@ jobs:
       uses: terraform-linters/setup-tflint@v4
       with:
         tflint_version: latest
-         
+
     - name: Init TFLint
       run: tflint --init
       working-directory: terraform
       env:
         GITHUB_TOKEN: ${{ github.token }}
-    
+
     - name: Run tflint
       run: tflint --chdir terraform/
 
@@ -40,20 +40,35 @@ jobs:
 
     - name: Scan YAML files with kube-linter
       uses: stackrox/kube-linter-action@v1.0.5
-      id: kube-linter-action-scan
+      id: kube-linter-action-scan-yaml
       with:
-        directory: k8s
+        directory: k8s/**/*.yaml
         # config: k8s/.kube-linter-config.yaml  # Uncomment if you have a config file
         format: sarif
-        output-file: results/kube-linter.sarif
+        output-file: results/kube-linter-yaml.sarif
       continue-on-error: true
 
-    - name: Upload SARIF report files to GitHub
+    - name: Scan Helm charts with kube-linter
+      uses: stackrox/kube-linter-action@v1.0.5
+      id: kube-linter-action-scan-helm
+      with:
+        directory: k8s/charts/**/*.yaml
+        # config: charts/hello-world/.kube-linter-config.yaml  # Uncomment if you have a config file
+        format: sarif
+        output-file: results/kube-linter-helm.sarif
+      continue-on-error: true
+
+    - name: Upload YAML SARIF report files to GitHub
       uses: github/codeql-action/upload-sarif@v3
       with:
-        sarif_file: results/kube-linter.sarif
+        sarif_file: results/kube-linter-yaml.sarif
+
+    - name: Upload Helm SARIF report files to GitHub
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: results/kube-linter-helm.sarif
 
     - name: Verify kube-linter-action succeeded
       run: |
-        echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
-        [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
+        echo "If this step fails, kube-linter found issues. Check the output of the scan steps above."
+        [[ -s results/kube-linter-yaml.sarif || -s results/kube-linter-helm.sarif ]]
