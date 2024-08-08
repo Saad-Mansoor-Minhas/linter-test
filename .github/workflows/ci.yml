@@ -1,6 +1,9 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   lint:
@@ -37,13 +40,17 @@ jobs:
         run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
         shell: bash
 
+      - name: Install Checkov
+        run: pip install checkov
+
       - name: Run kube-linter
         run: kube-linter lint .
 
-     
-
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform 'terraform/**/*.tf'
+
+      - name: Run Checkov for Terraform
+        run: checkov -d terraform/
 
       - name: Run actionlint
         run: ${{ steps.get_actionlint.outputs.executable }} -color
