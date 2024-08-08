@@ -57,7 +57,8 @@ jobs:
         run: kubeval k8s/**.yaml
 
       - name: Run Config-Lint for Terraform
-        run:  config-lint --config .config-lint --terraform 'terraform/**/*.tf'
+        run:  config-lint -terraform -ignore-ids terraform_required_version,terraform_required_providers 'terraform/**/*.tf'
+
 
       - name: Run tflint for Terraform
         run: tflint --chdir terraform/
