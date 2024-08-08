@@ -52,7 +52,7 @@ jobs:
       uses: stackrox/kube-linter-action@v1.0.5
       id: kube-linter-action-scan-helm
       with:
-        directory: k8s/charts/hello-world/
+        directory: k8s/charts/hello-world
         # config: charts/hello-world/.kube-linter-config.yaml  # Uncomment if you have a config file
         format: sarif
         output-file: results/kube-linter-helm.sarif
