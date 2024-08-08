@@ -28,8 +28,8 @@ jobs:
       uses: stackrox/kube-linter-action@v1.0.5
       id: kube-linter-action-scan
       with:
-        directory: sample/valid-yaml
-        config: sample/.kube-linter-config.yaml
+        directory: k8s/**.yaml
+        #config: k8s/.kube-linter-config.yaml
         format: sarif
         output-file: ../results/kube-linter.sarif
       continue-on-error: true
