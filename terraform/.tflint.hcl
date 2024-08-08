@@ -4,6 +4,12 @@ plugin "aws" {
   version = "0.32.0"
 }
 
+plugin "terraform" {
+  enabled = true
+  version = "0.5.0"
+  source  = "github.com/terraform-linters/tflint-ruleset-terraform"
+}
+
 rule "terraform_required_version" {
   enabled = false
 }
