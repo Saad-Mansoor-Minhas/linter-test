@@ -53,7 +53,7 @@ jobs:
       id: kube-linter-action-scan-helm
       with:
         directory: k8s/charts/hello-world
-        # config: charts/hello-world/.kube-linter-config.yaml  # Uncomment if you have a config file
+        # config: k8s/charts/hello-world/.kube-linter-config.yaml  # Uncomment if you have a config file
         format: sarif
         output-file: results/kube-linter-helm.sarif
       continue-on-error: true
