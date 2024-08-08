@@ -66,8 +66,8 @@ jobs:
       - name: Run TFLint for Terraform
         run: tflint --chdir terraform/
 
-      #- name: Run Checkov for Terraform, Kubernetes, and GitHub Actions
-        #run: checkov -d terraform/ -d k8s/ -d .github/workflows/
+      - name: Run Checkov for Terraform, Kubernetes, and GitHub Actions
+        run: checkov -d terraform/ -d k8s/ -d .github/workflows/
 
       - name: Run actionlint
         run: ${{ steps.get_actionlint.outputs.executable }} -color
