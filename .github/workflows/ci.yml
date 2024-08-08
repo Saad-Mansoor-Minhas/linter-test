@@ -58,6 +58,9 @@ jobs:
 
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform 'terraform/**/*.tf'
+      
+      - name: init tflint
+        run: tflint --init
 
       - name: Run tflint for Terraform
         run: tflint --chdir terraform/
