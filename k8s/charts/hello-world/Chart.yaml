@@ -1,0 +1,4 @@
+apiVersion: v2
+name: hello-world
+description: A simple Helm chart for Kubernetes
+version: 0.1.0
