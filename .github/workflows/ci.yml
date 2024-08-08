@@ -54,19 +54,20 @@ jobs:
         run: kube-linter lint k8s/.
 
       - name: Run kubeval
-        run: kubeval k8s/**.yaml
+        run: kubeval k8s/**/*.yaml
 
       - name: Run Config-Lint for Terraform
         run: config-lint --terraform 'terraform/**/*.tf'
-      
-      - name: init tflint
-        run: tflint --init
 
-      - name: Run tflint for Terraform
+      - name: Initialize TFLint
+        run: tflint --init
+        working-directory: terraform
+
+      - name: Run TFLint for Terraform
         run: tflint --chdir terraform/
 
-      #- name: Run Checkov for Terraform, Kubernetes, and GitHub Actions
-       # run: checkov -d terraform/ -d k8s/ -d .github/workflows/
+      - name: Run Checkov for Terraform, Kubernetes, and GitHub Actions
+        run: checkov -d terraform/ -d k8s/ -d .github/workflows/
 
       - name: Run actionlint
         run: ${{ steps.get_actionlint.outputs.executable }} -color
