@@ -57,10 +57,10 @@ jobs:
         run: kubeval k8s/**.yaml
 
       - name: Run Config-Lint for Terraform
-        run: config-lint --terraform 'terraform/**/*.tf'
+        run: config-lint --terraform 'terraform/**.tf'
 
       - name: Run tflint for Terraform
-        run: tflint --recursive terraform/
+        run: tflint --chdir terraform/
 
       - name: Run Checkov for Terraform, Kubernetes, and GitHub Actions
         run: checkov -d terraform/ -d k8s/ -d .github/workflows/
