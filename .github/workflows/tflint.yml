@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install tflint
       uses: terraform-linters/setup-tflint@v4
@@ -20,3 +20,24 @@ jobs:
 
     - name: Run tflint
       run:  tflint --chdir terraform/
+
+    - name: Create ../results directory for SARIF report files
+      run: mkdir -p ../results
+
+    - name: Scan yaml files with kube-linter
+      uses: stackrox/kube-linter-action@v1.0.5
+      id: kube-linter-action-scan
+      with:
+        directory: sample/valid-yaml
+        config: sample/.kube-linter-config.yaml
+        format: sarif
+        output-file: ../results/kube-linter.sarif
+      continue-on-error: true
+
+    - name: Upload SARIF report files to GitHub
+      uses: github/codeql-action/upload-sarif@v3
+
+    - name: Verify kube-linter-action succeeded
+      run: |
+        echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
+        [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
