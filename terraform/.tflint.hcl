@@ -1,5 +1,6 @@
 plugin "aws" {
   source  = "terraform-providers/aws"
+  enabled = true
   version = "0.27.0"
 }
 
