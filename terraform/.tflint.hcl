@@ -10,7 +10,7 @@ plugin "terraform" {
   source  = "github.com/terraform-linters/tflint-ruleset-terraform"
 }
 
-plugin "template" {
+plugin "custom_rule" {
   enabled = true
   version = "0.1.0"
   source  = "github.com/Saad-Mansoor-Minhas/custom_rule"
