@@ -10,10 +10,10 @@ plugin "terraform" {
   source  = "github.com/terraform-linters/tflint-ruleset-terraform"
 }
 
-plugin "custom_rule" {
+plugin "template" {
   enabled = true
   version = "0.1.0"
-  source  = "github.com/Saad-Mansoor-Minhas/custom_rule"
+  source  = "github.com/Saad-Mansoor-Minhas/tflint-ruleset-custom"
 }
 
 # Add any other TFLint configurations or rules here
