@@ -13,7 +13,7 @@ plugin "terraform" {
 plugin "template" {
   enabled = true
   version = "0.1.0"
-  source  = "C:\\Users\\saadr\\.tflint.d\\plugins\\tflint-ruleset-template.so"
+  source  = "github.com/Saad-Mansoor-Minhas/custom_rule"
 }
 
 # Add any other TFLint configurations or rules here
